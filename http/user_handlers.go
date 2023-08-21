@@ -1,0 +1,55 @@
+package http
+
+import (
+	"encoding/json"
+	"errors"
+	"net/http"
+
+	"github.com/FluffyKebab/daytail"
+)
+
+type signUpRequestPayload struct {
+	Name string `json:"name"`
+}
+
+type signUpResponsePayload struct {
+	Token string `json:"token"`
+}
+
+func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
+	var u signUpRequestPayload
+	err := json.NewDecoder(r.Body).Decode(&u)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = validateSignUpRequest(u)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	userId, err := h.UserService.CreateUser(daytail.User{Name: u.Name})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	_, token, err := h.tokenAuth.Encode(map[string]interface{}{"userId": userId})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(signUpResponsePayload{Token: token})
+}
+
+func validateSignUpRequest(r signUpRequestPayload) error {
+	if r.Name == "" {
+		return errors.New("missing name")
+	}
+
+	return nil
+}
