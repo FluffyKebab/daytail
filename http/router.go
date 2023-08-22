@@ -9,10 +9,19 @@ import (
 
 func Router(h Handler) http.Handler {
 	r := chi.NewRouter()
-	r.Use(jwtauth.Verifier(h.tokenAuth))
-	r.Use(jwtauth.Authenticator)
 
-	r.Post("/users/signup", h.SignUp)
+	// Protected routes.
+	r.Group(func(r chi.Router) {
+		r.Use(jwtauth.Verifier(h.tokenAuth))
+		r.Use(jwtauth.Authenticator)
+
+		r.Post("/users/{userId}/entries", h.CreateEntry)
+	})
+
+	// Public routes.
+	r.Group(func(r chi.Router) {
+		r.Post("/users/", h.SignUp)
+	})
 
 	return r
 }

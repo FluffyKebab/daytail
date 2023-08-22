@@ -20,9 +20,7 @@ func TestCreateUser(t *testing.T) {
 
 	jwtSecretKey := "secret"
 
-	workingPayload, err := json.Marshal(struct {
-		Name string `json:"name"`
-	}{Name: "bob"})
+	workingPayload, err := json.Marshal(signUpRequestPayload{Name: "bob"})
 	require.NoError(t, err)
 
 	nonWorkingPayload, err := json.Marshal(struct {
@@ -49,13 +47,11 @@ func TestCreateUser(t *testing.T) {
 			},
 			responseValidator: func(t *testing.T, rr *httptest.ResponseRecorder) {
 				t.Helper()
-				var responseToken struct {
-					Token string `json:"token"`
-				}
-				err := json.Unmarshal(rr.Body.Bytes(), &responseToken)
+				var responsePayload signUpResponsePayload
+				err := json.Unmarshal(rr.Body.Bytes(), &responsePayload)
 				require.NoError(t, err)
 
-				token, err := jwtauth.New("HS256", []byte(jwtSecretKey), nil).Decode(responseToken.Token)
+				token, err := jwtauth.New("HS256", []byte(jwtSecretKey), nil).Decode(responsePayload.Token)
 				require.NoError(t, err)
 
 				value, ok := token.Get("userId")

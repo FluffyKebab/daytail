@@ -20,5 +20,5 @@ type UserService interface {
 type EntryService interface {
 	Entry(id int) error
 	UserEntries(userId int) ([]Entry, error)
-	CreateEntry(entry Entry) error
+	CreateEntry(entry Entry) (int, error)
 }

@@ -11,7 +11,3 @@ type Handler struct {
 
 	tokenAuth *jwtauth.JWTAuth
 }
-
-func (h *Handler) InitAuth(jwtSecretKey string) {
-	h.tokenAuth = jwtauth.New("HS256", []byte(jwtSecretKey), nil)
-}

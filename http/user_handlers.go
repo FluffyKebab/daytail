@@ -36,7 +36,7 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, token, err := h.tokenAuth.Encode(map[string]interface{}{"userId": userId})
+	token, err := h.createToken(userId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
