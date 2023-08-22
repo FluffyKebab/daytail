@@ -13,7 +13,8 @@ type signUpRequestPayload struct {
 }
 
 type signUpResponsePayload struct {
-	Token string `json:"token"`
+	Token  string `json:"token"`
+	UserId int    `json:"id"`
 }
 
 func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +44,10 @@ func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(signUpResponsePayload{Token: token})
+	json.NewEncoder(w).Encode(signUpResponsePayload{
+		Token:  token,
+		UserId: userId,
+	})
 }
 
 func validateSignUpRequest(r signUpRequestPayload) error {

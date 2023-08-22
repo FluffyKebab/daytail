@@ -79,7 +79,7 @@ func TestCreateEntry(t *testing.T) {
 			req.Header.Set("Authorization", "BEARER "+tt.token)
 
 			h.EntryService = tt.mock
-			Router(h).ServeHTTP(rw, req)
+			router(h).ServeHTTP(rw, req)
 
 			require.Equal(t, tt.expectedStatusCode, rw.Result().StatusCode,
 				"unexpected status code")

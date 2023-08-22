@@ -1,15 +1,15 @@
 package daytail
 
 type Entry struct {
-	ID     int
-	UserID int
-	Title  string
-	Text   string
+	ID     int    `json:"id"`
+	UserID int    `json:"userId"`
+	Title  string `json:"title"`
+	Text   string `json:"text"`
 }
 
 type User struct {
-	ID   int
-	Name string
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type UserService interface {

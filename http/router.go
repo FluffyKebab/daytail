@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/jwtauth/v5"
 )
 
-func Router(h Handler) http.Handler {
+func router(h Handler) http.Handler {
 	r := chi.NewRouter()
 
 	// Protected routes.
@@ -16,6 +16,7 @@ func Router(h Handler) http.Handler {
 		r.Use(jwtauth.Authenticator)
 
 		r.Post("/users/{userId}/entries", h.CreateEntry)
+		r.Get("/users/{userId}/entries", h.GetEntries)
 	})
 
 	// Public routes.

@@ -7,7 +7,7 @@ import (
 )
 
 type UserService struct {
-	*sql.DB
+	DB *sql.DB
 }
 
 var _ daytail.UserService = UserService{}
