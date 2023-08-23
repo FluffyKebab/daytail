@@ -15,10 +15,12 @@ type User struct {
 type UserService interface {
 	User(id int) (User, error)
 	CreateUser(u User) (int, error)
+	Close() error
 }
 
 type EntryService interface {
 	Entry(id int) error
 	UserEntries(userId int) ([]Entry, error)
 	CreateEntry(entry Entry) (int, error)
+	Close() error
 }

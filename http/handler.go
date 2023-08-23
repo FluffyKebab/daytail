@@ -8,9 +8,9 @@ import (
 )
 
 type Handler struct {
-	daytail.EntryService
-	daytail.UserService
-	tokenAuth *jwtauth.JWTAuth
+	EntryService daytail.EntryService
+	UserService  daytail.UserService
+	tokenAuth    *jwtauth.JWTAuth
 }
 
 func ListenAndServe(address string, h Handler) error {

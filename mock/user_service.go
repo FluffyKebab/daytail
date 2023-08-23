@@ -21,3 +21,5 @@ func (s *UserService) CreateUser(u daytail.User) (int, error) {
 	s.CrateUserIsInvoked = true
 	return s.CreateUserFunc(u)
 }
+
+func (s *UserService) Close() error { return nil }

@@ -29,3 +29,5 @@ func (s *EntryService) CreateEntry(entry daytail.Entry) (int, error) {
 	s.CreateEntryIsInvoked = true
 	return s.CreateEntryFunc(entry)
 }
+
+func (s *EntryService) Close() error { return nil }

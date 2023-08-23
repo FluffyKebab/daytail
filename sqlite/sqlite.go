@@ -12,12 +12,18 @@ func Migrate() (*sql.DB, error) {
 		return nil, err
 	}
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT name string)")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name string)")
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY AUTOINCREMENT title string text string)")
+	_, err = db.Exec(`
+	CREATE TABLE IF NOT EXISTS entries (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		userId INTEGER, 
+		title string, 
+		text string)
+	`)
 
 	return db, nil
 }

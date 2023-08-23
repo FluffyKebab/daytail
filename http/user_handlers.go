@@ -14,10 +14,10 @@ type signUpRequestPayload struct {
 
 type signUpResponsePayload struct {
 	Token  string `json:"token"`
-	UserId int    `json:"id"`
+	UserId int    `json:"userId"`
 }
 
-func (h *Handler) SignUp(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	var u signUpRequestPayload
 	err := json.NewDecoder(r.Body).Decode(&u)
 	if err != nil {

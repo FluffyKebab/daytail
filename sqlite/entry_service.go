@@ -26,7 +26,7 @@ func (s EntryService) UserEntries(userId int) ([]daytail.Entry, error) {
 	var entries []daytail.Entry
 	for rows.Next() {
 		var entry daytail.Entry
-		err := rows.Scan(&entry.Title, &entry.Text)
+		err := rows.Scan(&entry.ID, &entry.UserID, &entry.Title, &entry.Text)
 		if err != nil {
 			return nil, err
 		}
@@ -39,9 +39,15 @@ func (s EntryService) UserEntries(userId int) ([]daytail.Entry, error) {
 func (s EntryService) CreateEntry(entry daytail.Entry) (int, error) {
 	var id int
 	err := s.DB.QueryRow(
-		"INSERT INTO TABLES entries (title, text) VALUES ($1, $2) RETURNING id",
+		"INSERT INTO entries (userId, title, text) VALUES ($1, $2, $3) RETURNING id",
+		entry.UserID,
 		entry.Title,
-		entry.Title,
+		entry.Text,
 	).Scan(&id)
+
 	return id, err
+}
+
+func (s EntryService) Close() error {
+	return s.DB.Close()
 }

@@ -21,3 +21,7 @@ func (s UserService) CreateUser(u daytail.User) (int, error) {
 	err := s.DB.QueryRow("INSERT INTO users (name) VALUES ($1) RETURNING id", u.Name).Scan(&id)
 	return id, err
 }
+
+func (s UserService) Close() error {
+	return s.DB.Close()
+}

@@ -86,7 +86,7 @@ func TestCreateUser(t *testing.T) {
 
 			rw := httptest.NewRecorder()
 			req := httptest.NewRequest("POST", "/users", tt.body)
-			h.SignUp(rw, req)
+			h.signUp(rw, req)
 			require.Equal(t, tt.expectedCreateUserIsInvoked, tt.mock.CrateUserIsInvoked,
 				"mock create user is invoked is unexpected")
 			require.Equal(t, tt.expectedStatusCode, rw.Result().StatusCode,

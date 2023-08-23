@@ -17,11 +17,12 @@ type createEntryResponsePayload struct {
 	Id int `json:"id"`
 }
 
-// CreateEntry is the http handler for POST "/users/{userId}/entries".
-func (h *Handler) CreateEntry(w http.ResponseWriter, r *http.Request) {
+// createEntry is the http handler for POST "/users/{userId}/entries".
+func (h *Handler) createEntry(w http.ResponseWriter, r *http.Request) {
 	userId, err := h.authenticate(r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
 	}
 
 	var rp createEntryRequestPayload
@@ -44,6 +45,7 @@ func (h *Handler) CreateEntry(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -62,11 +64,12 @@ func validateCreateEntryRequest(rp createEntryRequestPayload) error {
 	return nil
 }
 
-// GetEntries is the http handler for GET "/users/{userId}/entries".
-func (h *Handler) GetEntries(w http.ResponseWriter, r *http.Request) {
+// getEntries is the http handler for GET "/users/{userId}/entries".
+func (h *Handler) getEntries(w http.ResponseWriter, r *http.Request) {
 	userId, err := h.authenticate(r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
 	}
 
 	entries, err := h.EntryService.UserEntries(userId)

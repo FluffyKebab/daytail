@@ -27,14 +27,10 @@ func initServer() (http.Handler, error) {
 	if err != nil {
 		return http.Handler{}, err
 	}
-	defer db.Close()
-
-	userService := sqlite.UserService{DB: db}
-	entryService := sqlite.EntryService{DB: db}
 
 	h := http.Handler{
-		UserService:  userService,
-		EntryService: entryService,
+		UserService:  sqlite.UserService{DB: db},
+		EntryService: sqlite.EntryService{DB: db},
 	}
 	h.InitAuth("very_secret_code")
 
@@ -42,5 +38,6 @@ func initServer() (http.Handler, error) {
 }
 
 func runServer(h http.Handler) error {
+	defer h.UserService.Close()
 	return http.ListenAndServe(":8080", h)
 }

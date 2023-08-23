@@ -15,13 +15,13 @@ func router(h Handler) http.Handler {
 		r.Use(jwtauth.Verifier(h.tokenAuth))
 		r.Use(jwtauth.Authenticator)
 
-		r.Post("/users/{userId}/entries", h.CreateEntry)
-		r.Get("/users/{userId}/entries", h.GetEntries)
+		r.Post("/users/{userId}/entries", h.createEntry)
+		r.Get("/users/{userId}/entries", h.getEntries)
 	})
 
 	// Public routes.
 	r.Group(func(r chi.Router) {
-		r.Post("/users/", h.SignUp)
+		r.Post("/users", h.signUp)
 	})
 
 	return r
